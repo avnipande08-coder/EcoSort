@@ -10,4 +10,12 @@
         android:id="@+id/menuSortZA"
         android:title="Sort Z-A"/>
 
+    <item
+        android:id="@+id/menuQuiz"
+        android:title="Waste Sorting Quiz"/>
+
+    <item
+        android:id="@+id/menuLogout"
+        android:title="Logout"/>
+
 </menu>

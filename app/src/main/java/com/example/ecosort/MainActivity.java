@@ -1,6 +1,8 @@
 
 package com.example.ecosort;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -197,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -207,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -220,6 +225,73 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.menuSortZA) {
 
             wasteAdapter.sortZA();
+
+            return true;
+        }
+
+        if (item.getItemId() == R.id.menuQuiz) {
+
+            Intent intent =
+                    new Intent(
+                            MainActivity.this,
+                            QuizActivity.class
+                    );
+
+            startActivity(intent);
+
+            return true;
+        }
+
+        if (item.getItemId() == R.id.menuLogout) {
+
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(
+                            MainActivity.this
+                    );
+
+            builder.setTitle("Logout");
+
+            builder.setMessage(
+                    "Are you sure you want to logout?"
+            );
+
+            builder.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(
+                                DialogInterface dialog,
+                                int which) {
+
+                            Intent intent =
+                                    new Intent(
+                                            MainActivity.this,
+                                            LoginActivity.class
+                                    );
+
+                            startActivity(intent);
+
+                            finish();
+                        }
+                    }
+            );
+
+            builder.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(
+                                DialogInterface dialog,
+                                int which) {
+
+                            dialog.dismiss();
+                        }
+                    }
+            );
+
+            builder.show();
 
             return true;
         }
