@@ -1,4 +1,3 @@
-
 package com.example.ecosort;
 
 import android.content.DialogInterface;
@@ -15,11 +14,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecosort.APIResponse;
-import com.example.ecosort.WasteService;
+import com.example.ecosort.utils.SessionManager;
 
 import java.util.ArrayList;
 
@@ -30,273 +29,107 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerViewForWastes;
-
     EditText searchEditText;
-
     ArrayList<Waste> wasteArrayList = new ArrayList<>();
-
     WasteAdapter wasteAdapter;
-    Button buttonAll,
-            buttonGreen,
-            buttonBlue,
-            buttonRed;
+    Button buttonAll, buttonGreen, buttonBlue, buttonRed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerViewForWastes =
-                findViewById(R.id.recyclerViewForWastes);
+        recyclerViewForWastes = findViewById(R.id.recyclerViewForWastes);
+        searchEditText = findViewById(R.id.searchEditText);
+        buttonAll = findViewById(R.id.buttonAll);
+        buttonGreen = findViewById(R.id.buttonGreen);
+        buttonBlue = findViewById(R.id.buttonBlue);
+        buttonRed = findViewById(R.id.buttonRed);
 
-        searchEditText =
-                findViewById(R.id.searchEditText);
-        buttonAll =
-                findViewById(R.id.buttonAll);
-
-        buttonGreen =
-                findViewById(R.id.buttonGreen);
-
-        buttonBlue =
-                findViewById(R.id.buttonBlue);
-
-        buttonRed =
-                findViewById(R.id.buttonRed);
-
-
-        recyclerViewForWastes.setLayoutManager(
-                new LinearLayoutManager(
-                        this,
-                        LinearLayoutManager.VERTICAL,
-                        false
-                )
-        );
+        recyclerViewForWastes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerViewForWastes.addItemDecoration(divider);
 
         wasteAdapter = new WasteAdapter(wasteArrayList);
-
         recyclerViewForWastes.setAdapter(wasteAdapter);
 
-
-        // SEARCH
         searchEditText.addTextChangedListener(new TextWatcher() {
-
             @Override
-            public void beforeTextChanged(
-                    CharSequence s,
-                    int start,
-                    int count,
-                    int after) {
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(
-                    CharSequence s,
-                    int start,
-                    int before,
-                    int count) {
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 wasteAdapter.filter(s.toString());
             }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        buttonAll.setOnClickListener(v -> wasteAdapter.filterByBinColor("All"));
+        buttonGreen.setOnClickListener(v -> wasteAdapter.filterByBinColor("Green"));
+        buttonBlue.setOnClickListener(v -> wasteAdapter.filterByBinColor("Blue"));
+        buttonRed.setOnClickListener(v -> wasteAdapter.filterByBinColor("Red"));
+
+        WasteService wasteService = WasteService.getInstance();
+        wasteService.getWastes().enqueue(new Callback<APIResponse>() {
+            @Override
+            public void onResponse(Call<APIResponse> call, Response<APIResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    wasteArrayList.clear();
+                    wasteArrayList.addAll(response.body().getWastes());
+                    wasteAdapter.updateList(wasteArrayList);
+                    Toast.makeText(MainActivity.this, "Items: " + wasteArrayList.size(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void onFailure(Call<APIResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "API Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-        buttonAll.setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        wasteAdapter.filterByBinColor("All");
-
-                    }
-                }
-        );
-
-        buttonGreen.setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        wasteAdapter.filterByBinColor("Green");
-
-                    }
-                }
-        );
-
-        buttonBlue.setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        wasteAdapter.filterByBinColor("Blue");
-
-                    }
-                }
-        );
-
-        buttonRed.setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        wasteAdapter.filterByBinColor("Red");
-
-                    }
-                }
-        );
-
-
-        // GET DATA FROM API
-
-        WasteService wasteService =
-                WasteService.getInstance();
-
-        wasteService.getWastes().enqueue(
-                new Callback<APIResponse>() {
-
-                    @Override
-                    public void onResponse(
-                            Call<APIResponse> call,
-                            Response<APIResponse> response) {
-
-                        if (response.isSuccessful()
-                                && response.body() != null) {
-
-                            wasteArrayList.clear();
-
-                            wasteArrayList.addAll(
-                                    response.body().getWastes()
-                            );
-
-                            wasteAdapter.updateList(
-                                    wasteArrayList
-                            );
-
-                            Toast.makeText(
-                                    MainActivity.this,
-                                    "Items: " + wasteArrayList.size(),
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    }
-
-
-                    @Override
-                    public void onFailure(
-                            Call<APIResponse> call,
-                            Throwable t) {
-
-                        Toast.makeText(
-                                MainActivity.this,
-                                "API Error: " + t.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
-                    }
-                }
-        );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(
-                R.menu.menu_main,
-                menu
-        );
-
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == R.id.menuSortAZ) {
-
             wasteAdapter.sortAZ();
-
             return true;
         }
-
         if (item.getItemId() == R.id.menuSortZA) {
-
             wasteAdapter.sortZA();
-
             return true;
         }
-
         if (item.getItemId() == R.id.menuQuiz) {
-
-            Intent intent =
-                    new Intent(
-                            MainActivity.this,
-                            QuizActivity.class
-                    );
-
-            startActivity(intent);
-
+            startActivity(new Intent(MainActivity.this, QuizActivity.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.menuDashboard) {
+            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.menuLeaderboard) {
+            startActivity(new Intent(MainActivity.this, LeaderboardActivity.class));
             return true;
         }
 
         if (item.getItemId() == R.id.menuLogout) {
-
-            AlertDialog.Builder builder =
-                    new AlertDialog.Builder(
-                            MainActivity.this
-                    );
-
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle("Logout");
-
-            builder.setMessage(
-                    "Are you sure you want to logout?"
-            );
-
-            builder.setPositiveButton(
-                    "Yes",
-                    new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(
-                                DialogInterface dialog,
-                                int which) {
-
-                            Intent intent =
-                                    new Intent(
-                                            MainActivity.this,
-                                            LoginActivity.class
-                                    );
-
-                            startActivity(intent);
-
-                            finish();
-                        }
-                    }
-            );
-
-            builder.setNegativeButton(
-                    "No",
-                    new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(
-                                DialogInterface dialog,
-                                int which) {
-
-                            dialog.dismiss();
-                        }
-                    }
-            );
-
+            builder.setMessage("Are you sure you want to logout?");
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                new SessionManager(this).logout();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            });
+            builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
             builder.show();
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
-

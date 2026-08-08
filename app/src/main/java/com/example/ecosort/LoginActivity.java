@@ -2,117 +2,56 @@ package com.example.ecosort;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.ecosort.data.*;
+import com.example.ecosort.utils.SessionManager;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
-
-    EditText editTextUsername, editTextPassword;
-    Button buttonLogin;
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
+        setContentView(R.layout.activity_login);
 
-        editTextUsername =
-                findViewById(R.id.editTextUsername);
+        session = new SessionManager(this);
+        if (session.isLoggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
 
-        editTextPassword =
-                findViewById(R.id.editTextPassword);
+        TextInputEditText etUsername = findViewById(R.id.etUsername);
+        TextInputEditText etPassword = findViewById(R.id.etPassword);
+        MaterialButton btnLogin = findViewById(R.id.btnLogin);
 
-        buttonLogin =
-                findViewById(R.id.buttonLogin);
-
-
-        buttonLogin.setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        String username =
-                                editTextUsername
-                                        .getText()
-                                        .toString()
-                                        .trim();
-
-                        String password =
-                                editTextPassword
-                                        .getText()
-                                        .toString()
-                                        .trim();
-
-                        LoginRequest loginRequest =
-                                new LoginRequest(
-                                        username,
-                                        password
-                                );
-
-                        AuthService authService =
-                                AuthService.getInstance();
-
-                        authService.login(loginRequest).enqueue(
-
-                                new Callback<LoginResponse>() {
-
-                                    @Override
-                                    public void onResponse(
-                                            Call<LoginResponse> call,
-                                            Response<LoginResponse> response) {
-
-                                        if (response.isSuccessful()
-                                                && response.body() != null) {
-
-                                            Toast.makeText(
-                                                    LoginActivity.this,
-                                                    "Login Successful",
-                                                    Toast.LENGTH_SHORT
-                                            ).show();
-
-                                            Intent intent =
-                                                    new Intent(
-                                                            LoginActivity.this,
-                                                            MainActivity.class
-                                                    );
-
-                                            startActivity(intent);
-
-                                            finish();
-                                        }
-                                        else {
-
-                                            Toast.makeText(
-                                                    LoginActivity.this,
-                                                    "Invalid Username or Password",
-                                                    Toast.LENGTH_SHORT
-                                            ).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(
-                                            Call<LoginResponse> call,
-                                            Throwable t) {
-
-                                        Toast.makeText(
-                                                LoginActivity.this,
-                                                t.getMessage(),
-                                                Toast.LENGTH_LONG
-                                        ).show();
-                                    }
-                                }
-                        );
+        btnLogin.setOnClickListener(v -> {
+            String u = etUsername.getText().toString().trim();
+            String p = etPassword.getText().toString().trim();
+            if (u.isEmpty() || p.isEmpty()) {
+                Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Executors.newSingleThreadExecutor().execute(() -> {
+                AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+                UserEntity user = db.userDao().findByUsername(u);
+                runOnUiThread(() -> {
+                    if (user != null && user.passwordHash.equals(PasswordUtils.hash(p))) {
+                        session.saveSession(user.id, user.username);
+                        startActivity(new Intent(this, MainActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     }
-                }
-        );
+                });
+            });
+        });
+
+        findViewById(R.id.tvGoSignup).setOnClickListener(v ->
+                startActivity(new Intent(this, SignupActivity.class)));
     }
 }

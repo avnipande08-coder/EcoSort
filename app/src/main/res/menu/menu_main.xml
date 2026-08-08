@@ -15,6 +15,14 @@
         android:title="Waste Sorting Quiz"/>
 
     <item
+        android:id="@+id/menuDashboard"
+        android:title="Dashboard / Log Waste"/>
+
+    <item
+        android:id="@+id/menuLeaderboard"
+        android:title="Leaderboard"/>
+
+    <item
         android:id="@+id/menuLogout"
         android:title="Logout"/>
 
