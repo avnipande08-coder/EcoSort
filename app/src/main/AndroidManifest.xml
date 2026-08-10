@@ -25,6 +25,8 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".QuizActivity"/>
         <activity android:name=".WasteDetailsActivity"/>
+        <activity android:name=".SortingGameActivity"/>
+        <activity android:name=".BusinessIdeasActivity"/>
     </application>
 
 </manifest>

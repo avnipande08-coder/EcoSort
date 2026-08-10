@@ -1,6 +1,5 @@
 package com.example.ecosort;
 
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +15,7 @@ public class WasteDetailsActivity extends AppCompatActivity {
 
     ImageView wasteImageView;
 
-    TextView wasteIdTextView,
-            nameTextView,
+    TextView nameTextView,
             tipsTextView,
             binColorTextView,
             categoryTextView,
@@ -35,7 +33,6 @@ public class WasteDetailsActivity extends AppCompatActivity {
 
         wasteImageView = findViewById(R.id.wasteImageView);
 
-        wasteIdTextView = findViewById(R.id.wasteIdTextView);
         nameTextView = findViewById(R.id.nameTextView);
         tipsTextView = findViewById(R.id.tipsTextView);
         binColorTextView = findViewById(R.id.binColorTextView);
@@ -43,8 +40,7 @@ public class WasteDetailsActivity extends AppCompatActivity {
         recyclableTextView = findViewById(R.id.recyclableTextView);
         descriptionTextView = findViewById(R.id.descriptionTextView);
         disposalMethodTextView = findViewById(R.id.disposalMethodTextView);
-        decompositionTimeTextView =
-                findViewById(R.id.decompositionTimeTextView);
+        decompositionTimeTextView = findViewById(R.id.decompositionTimeTextView);
 
         extractAndBindData();
     }
@@ -54,19 +50,11 @@ public class WasteDetailsActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
-            extractedWaste = i.getSerializableExtra(
-                    "waste",
-                    Waste.class
-            );
-
+            extractedWaste = i.getSerializableExtra("waste", Waste.class);
         } else {
-
-            extractedWaste =
-                    (Waste) i.getSerializableExtra("waste");
+            extractedWaste = (Waste) i.getSerializableExtra("waste");
         }
 
-        wasteIdTextView.setText(extractedWaste.getId() + "");
         nameTextView.setText(extractedWaste.getName());
         tipsTextView.setText(extractedWaste.getTips());
         binColorTextView.setText(extractedWaste.getBinColor());
@@ -78,17 +66,9 @@ public class WasteDetailsActivity extends AppCompatActivity {
             recyclableTextView.setText("Not Recyclable");
         }
 
-        descriptionTextView.setText(
-                extractedWaste.getDescription()
-        );
-
-        disposalMethodTextView.setText(
-                extractedWaste.getDisposalMethod()
-        );
-
-        decompositionTimeTextView.setText(
-                extractedWaste.getDecompositionTime()
-        );
+        descriptionTextView.setText(extractedWaste.getDescription());
+        disposalMethodTextView.setText(extractedWaste.getDisposalMethod());
+        decompositionTimeTextView.setText(extractedWaste.getDecompositionTime());
 
         Glide.with(this)
                 .load(extractedWaste.getImage())

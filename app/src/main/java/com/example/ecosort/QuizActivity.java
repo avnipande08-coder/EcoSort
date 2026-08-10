@@ -59,11 +59,13 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void loadQuestions() {
-        questionArrayList.add(new Question("Where should Banana Peel be thrown?", "Green Bin", "Blue Bin", "Red Bin", "Green Bin"));
-        questionArrayList.add(new Question("Where should Plastic Bottle be thrown?", "Green Bin", "Blue Bin", "Red Bin", "Blue Bin"));
-        questionArrayList.add(new Question("Where should Battery be thrown?", "Green Bin", "Blue Bin", "Red Bin", "Red Bin"));
-        questionArrayList.add(new Question("Where should Newspaper be thrown?", "Green Bin", "Blue Bin", "Red Bin", "Blue Bin"));
-        questionArrayList.add(new Question("Where should Vegetable Waste be thrown?", "Green Bin", "Blue Bin", "Red Bin", "Green Bin"));
+        questionArrayList.add(new Question("How long does a plastic bottle take to decompose?", "10 years", "450 years", "1 year", "450 years"));
+        questionArrayList.add(new Question("Which material can be recycled endlessly without losing quality?", "Plastic", "Glass", "Paper", "Glass"));
+        questionArrayList.add(new Question("What percentage of e-waste is recycled globally?", "About 20%", "About 80%", "About 50%", "About 20%"));
+        questionArrayList.add(new Question("Which everyday habit reduces food waste the most?", "Meal planning", "Buying in bulk", "Eating out often", "Meal planning"));
+        questionArrayList.add(new Question("What is composting mainly used to produce?", "Fuel", "Fertilizer", "Plastic", "Fertilizer"));
+        questionArrayList.add(new Question("Which of these is NOT biodegradable?", "Banana peel", "Styrofoam", "Paper", "Styrofoam"));
+        questionArrayList.add(new Question("What does the 'R' in the 3Rs of sustainability NOT stand for?", "Reduce", "Repair", "Reuse", "Repair"));
     }
 
     private void showQuestion() {

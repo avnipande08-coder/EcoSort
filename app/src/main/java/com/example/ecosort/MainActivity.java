@@ -130,6 +130,16 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
             return true;
         }
+
+        if (item.getItemId() == R.id.menuSortingGame) {
+            startActivity(new Intent(MainActivity.this, SortingGameActivity.class));
+            return true;
+        }
+
+        if (item.getItemId() == R.id.menuBusinessIdeas) {
+            startActivity(new Intent(MainActivity.this, BusinessIdeasActivity.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

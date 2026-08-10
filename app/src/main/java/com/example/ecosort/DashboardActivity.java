@@ -12,9 +12,10 @@ import java.util.concurrent.Executors;
 public class DashboardActivity extends AppCompatActivity {
     SessionManager session;
     TextView tvPoints, tvWelcome;
+    Spinner spinnerCategory;
 
-    static final String DEFAULT_CATEGORY = "general";
-    static final int DEFAULT_POINTS = 2;
+    String[] categories = {"plastic", "paper", "organic", "ewaste", "metal", "glass", "general"};
+    int[] pointsFor = {10, 5, 8, 15, 12, 10, 2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,14 @@ public class DashboardActivity extends AppCompatActivity {
 
         tvWelcome = findViewById(R.id.tvWelcome);
         tvPoints = findViewById(R.id.tvPoints);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
         MaterialButton btnBrowseWaste = findViewById(R.id.btnBrowseWaste);
         MaterialButton btnLog = findViewById(R.id.btnLogWaste);
         MaterialButton btnLeaderboard = findViewById(R.id.btnLeaderboard);
         MaterialButton btnLogout = findViewById(R.id.btnLogout);
 
         tvWelcome.setText("Hi, " + session.getUsername() + " 👋");
+        spinnerCategory.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories));
 
         refreshPoints();
 
@@ -54,12 +57,16 @@ public class DashboardActivity extends AppCompatActivity {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             UserEntity user = db.userDao().findById(session.getUserId());
             if (user != null) {
-                runOnUiThread(() -> tvPoints.setText("Total Points: " + user.totalPoints));
+                runOnUiThread(() -> tvPoints.setText(String.valueOf(user.totalPoints)));
             }
         });
     }
 
     private void logWaste() {
+        int index = spinnerCategory.getSelectedItemPosition();
+        String category = categories[index];
+        int pts = pointsFor[index];
+
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
             UserEntity user = db.userDao().findById(session.getUserId());
@@ -67,18 +74,15 @@ public class DashboardActivity extends AppCompatActivity {
 
             WasteLogEntity log = new WasteLogEntity();
             log.userId = user.id;
-            log.category = DEFAULT_CATEGORY;
-            log.points = DEFAULT_POINTS;
+            log.category = category;
+            log.points = pts;
             log.timestamp = System.currentTimeMillis();
             db.wasteLogDao().insert(log);
 
-            user.totalPoints += DEFAULT_POINTS;
+            user.totalPoints += pts;
             db.userDao().update(user);
 
-            runOnUiThread(() -> {
-                Toast.makeText(this, "+" + DEFAULT_POINTS + " points!", Toast.LENGTH_SHORT).show();
-                tvPoints.setText("Total Points: " + user.totalPoints);
-            });
+            runOnUiThread(() -> tvPoints.setText(String.valueOf(user.totalPoints)));
         });
     }
 }
