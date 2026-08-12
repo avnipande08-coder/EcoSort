@@ -10,28 +10,4 @@
         android:id="@+id/menuSortZA"
         android:title="Sort Z-A"/>
 
-    <item
-        android:id="@+id/menuQuiz"
-        android:title="Waste Sorting Quiz"/>
-
-    <item
-        android:id="@+id/menuSortingGame"
-        android:title="Drag &amp; Drop Game"/>
-
-    <item
-        android:id="@+id/menuBusinessIdeas"
-        android:title="Waste to Business"/>
-
-    <item
-        android:id="@+id/menuDashboard"
-        android:title="Dashboard / Log Waste"/>
-
-    <item
-        android:id="@+id/menuLeaderboard"
-        android:title="Leaderboard"/>
-
-    <item
-        android:id="@+id/menuLogout"
-        android:title="Logout"/>
-
 </menu>

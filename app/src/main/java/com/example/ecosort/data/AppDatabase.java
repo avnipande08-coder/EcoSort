@@ -5,10 +5,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {UserEntity.class, WasteLogEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {UserEntity.class, WasteLogEntity.class, RedemptionEntity.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract WasteLogDao wasteLogDao();
+    public abstract RedemptionDao redemptionDao();
 
     private static volatile AppDatabase INSTANCE;
 
@@ -19,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),
                             AppDatabase.class, "ecosort.db"
-                    ).build();
+                    ).fallbackToDestructiveMigration().build();
                 }
             }
         }

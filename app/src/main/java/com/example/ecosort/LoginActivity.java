@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
         session = new SessionManager(this);
         if (session.isLoggedIn()) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, DashboardActivity_streak.class));
             finish();
             return;
         }
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (user != null && user.passwordHash.equals(PasswordUtils.hash(p))) {
                         session.saveSession(user.id, user.username);
-                        startActivity(new Intent(this, MainActivity.class));
+                        startActivity(new Intent(this, DashboardActivity_streak.class));
                         finish();
                     } else {
                         Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();

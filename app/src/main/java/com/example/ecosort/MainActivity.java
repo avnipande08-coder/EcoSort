@@ -1,7 +1,5 @@
 package com.example.ecosort;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,13 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.ecosort.utils.SessionManager;
 
 import java.util.ArrayList;
 
@@ -102,42 +97,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.menuSortZA) {
             wasteAdapter.sortZA();
-            return true;
-        }
-        if (item.getItemId() == R.id.menuQuiz) {
-            startActivity(new Intent(MainActivity.this, QuizActivity.class));
-            return true;
-        }
-        if (item.getItemId() == R.id.menuDashboard) {
-            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-            return true;
-        }
-        if (item.getItemId() == R.id.menuLeaderboard) {
-            startActivity(new Intent(MainActivity.this, LeaderboardActivity.class));
-            return true;
-        }
-
-        if (item.getItemId() == R.id.menuLogout) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Logout");
-            builder.setMessage("Are you sure you want to logout?");
-            builder.setPositiveButton("Yes", (dialog, which) -> {
-                new SessionManager(this).logout();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            });
-            builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
-            builder.show();
-            return true;
-        }
-
-        if (item.getItemId() == R.id.menuSortingGame) {
-            startActivity(new Intent(MainActivity.this, SortingGameActivity.class));
-            return true;
-        }
-
-        if (item.getItemId() == R.id.menuBusinessIdeas) {
-            startActivity(new Intent(MainActivity.this, BusinessIdeasActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
