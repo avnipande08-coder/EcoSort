@@ -1,13 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.EcoSort" parent="Theme.Material3.DayNight.NoActionBar">
-
         <item name="colorPrimary">@color/green_primary</item>
-        <item name="colorSecondary">@color/green_primary</item>
-
-        <!-- Action Bar -->
+        <item name="colorSecondary">@color/teal_primary</item>
         <item name="android:statusBarColor">@color/green_dark</item>
-
+        <item name="android:windowBackground">@color/bg_soft</item>
     </style>
 
     <style name="Theme.EcoSort" parent="Base.Theme.EcoSort"/>

@@ -29,6 +29,7 @@
         <activity android:name=".SortingGameActivity"/>
         <activity android:name=".BusinessIdeasActivity"/>
         <activity android:name=".BusinessDetailActivity"/>
+        <activity android:name=".ProfileActivity"/>
     </application>
 
 </manifest>

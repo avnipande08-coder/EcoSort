@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.google.guava:guava:31.1-android")
     implementation("androidx.room:room-runtime:2.6.1")

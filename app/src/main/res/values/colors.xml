@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green_primary">#4CAF50</color>
-    <color name="green_dark">#2E7D32</color>
-    <color name="green_light">#C8E6C9</color>
+    <!-- Primary — deep forest green, more premium than the old bright green -->
+    <color name="green_primary">#1B5E3F</color>
+    <color name="green_dark">#0F3D28</color>
+    <color name="green_light">#A8D5BA</color>
+
+    <!-- Secondary — muted teal, pairs with green without clashing -->
+    <color name="teal_primary">#2C6E6B</color>
+    <color name="teal_light">#B2DFDB</color>
+
+    <!-- Accent — warm muted gold, not traffic-orange -->
+    <color name="accent_gold">#C9A24B</color>
+    <color name="accent_gold_dark">#A5822F</color>
+
+    <!-- Neutrals -->
+    <color name="bg_soft">#F6F5F0</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="text_primary">#1C1C1C</color>
+    <color name="text_muted">#6B6B6B</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="card_shadow">#1A000000</color>
 </resources>
